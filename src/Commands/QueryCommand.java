@@ -28,19 +28,7 @@ public class QueryCommand implements CommandExecutor{
             } else {
 
                 if (args.length < 1) {
-                    sender.sendMessage("");
-                    sender.sendMessage(util.getPrefix());
-                    sender.sendMessage(ChatColor.DARK_GRAY + "--------------------");
-                    sender.sendMessage(ChatColor.GRAY + "SQL features/commands.");
-                    sender.sendMessage("/sql <functions>");
-                    sender.sendMessage("/sql <help>");
-                    sender.sendMessage("/sql <admin>");
-                    sender.sendMessage("/sql [test] <Connection_Parameters>");
-                    sender.sendMessage("=========================");
-                    sender.sendMessage("Permissions:");
-                    sender.sendMessage("SQL.execute - Allows user to run SQL Query's and access database functions.");
-                    sender.sendMessage("SQL.function.admin - Help directory for Database Administrators.");
-                    sender.sendMessage("---------------");
+                   util.help_args0(sender);
                     //sender.sendMessage("Options -/sql <query> <sql>/sql <data> <sql>");
                 } else {
 
@@ -65,26 +53,10 @@ public class QueryCommand implements CommandExecutor{
                             }
                         }
                     } else if (args[0].equalsIgnoreCase("help")) {
-                        sender.sendMessage("");
-                        sender.sendMessage(ChatColor.DARK_GRAY + "--------------------");
-                        sender.sendMessage(ChatColor.GRAY + "Controller SQL help page:");
-                        sender.sendMessage(ChatColor.GRAY + "Commands. - Functions that are surrounded with\"[]\", are required.\nFunctions surrounded with \"<>\", are sometimes not required. ");
-                        sender.sendMessage("/sql [query] <sql> - Allows you to write most sql query's. SEE EXAMPLES.");
-                        //sender.sendMessage("/sql [function] - Due to Bukkits limited visual interface, some SQL features aren't available. They will be hard coded.");
-                        sender.sendMessage("/sql [examples] - Examples of Query's that can be executed.");
-                        sender.sendMessage("/sql [admin] - Admin related functions.");
+                        util.help(sender);
                         return true;
                     } else if (args[0].equalsIgnoreCase("examples")) {
-                        sender.sendMessage("");
-                        sender.sendMessage(ChatColor.DARK_GRAY + "--------------------");
-                        sender.sendMessage(ChatColor.GRAY + "SQL Examples. ");
-                       // sender.sendMessage(ChatColor.GRAY + "Since minecraft visuals are limited, the only sql functions that will really make sense to use are database functions.");
-                        sender.sendMessage(ChatColor.GRAY + "All querys must use the command syntax, /sql [query] <sql> In order to be executed.");
-                        //sender.sendMessage("Adding ID tags to tables:" + ChatColor.GREEN + " ALTER TABLE [table_name] ADD id INT PRIMARY KEY AUTO_INCREMENT FIRST;");
-                        sender.sendMessage("Creating a table example: " + ChatColor.GREEN + " CREATE TABLE IF NOT EXISTS [table_name] ( <column_name> varchar(25), <ip> varchar(30));");
-                        sender.sendMessage("Removing a table: " + ChatColor.GREEN + " DROP TABLE [table_name];" + ChatColor.DARK_RED +" BE EXTREMELY CAREFUL WITH THIS. REMOVES TABLE COMPLETELY.");
-                        sender.sendMessage("Deleting rows or data: " + ChatColor.GREEN + " DELETE * FROM [table_name] WHERE [Column_name] = '[value]'; ");
-                        sender.sendMessage("Inserting data into tables: " + ChatColor.GREEN + " INSERT INTO [table_name] [ ('Column1','Column2') ] VALUES ('Test1','test2'); ");
+                       util.examples(sender);
                     } else if (args[0].equalsIgnoreCase("admin")) {
                         if (!sender.hasPermission("SQL.function.admin")) {
                             sender.sendMessage(ChatColor.YELLOW + "This section requires the rank " + ChatColor.RED + "Administrator or Above.");
@@ -96,7 +68,6 @@ public class QueryCommand implements CommandExecutor{
                              * Implement a method that gets the current connection parameters.
                              * And displays them to the user.
                              */
-
                             util.returnConnectionValues(main,sender);
 
 
@@ -109,11 +80,15 @@ public class QueryCommand implements CommandExecutor{
                         if (args.length == 1) {
                             sender.sendMessage("/sql [test] connection [<host> <username> <password> <database>] - Test an SQL Connection.");
                         } else if (args.length  > 1) {
-                                params[0] = args[2];
-                                params[1] = args[3];
-                                params[2] = args[4];
-                                params[3] = args[5];
-                                test = new TestConnection(params[0], params[1], params[2], params[3], sender);
+                               try {
+                                   params[0] = args[2];
+                                   params[1] = args[3];
+                                   params[2] = args[4];
+                                   params[3] = args[5];
+                                   test = new TestConnection(params[0], params[1], params[2], params[3], sender);
+                               }catch (Exception e) {
+                                   sender.sendMessage(util.syntaxError(e));
+                               }
                         }
                     } else if (args[0].equalsIgnoreCase("time")) {
 
@@ -150,13 +125,7 @@ public class QueryCommand implements CommandExecutor{
                            util.getDatabases(this.main.getSQL(),sender);
                        }
                     }else if(args[0].equalsIgnoreCase("functions")) {
-                        sender.sendMessage(ChatColor.GRAY + "Functions. - Functions that are surrounded with\"[]\", are required.\nFunctions surrounded with \"<>\", are sometimes not required. ");
-                        sender.sendMessage("/sql [query] <sql> - Allows you to write most sql query's. SEE EXAMPLES.");
-                        sender.sendMessage("/sql time - Displays the Server's time and Databases Time.");
-                        sender.sendMessage("/sql tables  - Gets all Tables stored on the Database.");
-                        sender.sendMessage("/sql databases - Lists all current Databases.");
-                        sender.sendMessage("/sql test - Allows you to test a connection.");
-
+                        util.functions(sender);
                     }else {
                         sender.sendMessage(util.getPrefix() +ChatColor.RED+ "--> " + "Incorrect Arguments. /sql help");
                     }

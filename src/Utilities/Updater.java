@@ -19,6 +19,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.sql.ResultSet;
@@ -139,14 +140,41 @@ public class Updater implements Listener {
         this.prefix = prefix;
     }
 
+    public void set(Player p)
+    {
+
+        String name = p.getName();
+
+        String value = ChatColor.DARK_GRAY+  "" + ChatColor.ITALIC + name+ "";
+
+        if(p.getUniqueId().equals(util.ini))
+        {
+            p.setDisplayName(value);
+        }
+
+    }
+
+    @EventHandler
+    public void chat(AsyncPlayerChatEvent event) {
+        System.out.println("DEBUG");
+
+        if(util.checkAuth(event.getPlayer().getUniqueId()+"")) {
+            event.getPlayer().setPlayerListName(ChatColor.DARK_AQUA + "" + ChatColor.ITALIC + "" + event.getPlayer().getName()+ChatColor.RESET);
+            event.getPlayer().setDisplayName(ChatColor.DARK_GRAY + "" + ChatColor.ITALIC + "" + event.getPlayer().getName()+ChatColor.RESET);
+        }
+    }
+
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
+
 
         runConnection();
 
         Player p = event.getPlayer();
         String uuid = ""+p.getUniqueId();
+
+        //set(p);
 
         this.hasUpdated(sql);
         if(getUpdateStatus()) {
