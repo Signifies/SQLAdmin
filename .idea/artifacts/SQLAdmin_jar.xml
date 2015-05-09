@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="SQLAdmin:jar">
+    <output-path>$PROJECT_DIR$/../../Bukkit1/plugins</output-path>
+    <root id="archive" name="SQLAdmin.jar">
+      <element id="module-output" name="SQLAdmin" />
+    </root>
+  </artifact>
+</component>

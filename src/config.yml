@@ -1,0 +1,6 @@
+Database:
+  Enabled: false
+  host: 1.0.10
+  username: user
+  password: pass
+  database: db

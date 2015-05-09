@@ -1,0 +1,9 @@
+name: SQLAdmin
+main: me.ES359.SQLAdmin.SQLAdmin
+version: 1.2
+description: SQL administrator plugin.
+author: ES359
+
+commands:
+  sql:
+    description: Allows the user to execute SQL functions.
